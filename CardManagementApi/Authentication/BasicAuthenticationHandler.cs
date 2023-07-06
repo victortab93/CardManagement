@@ -47,8 +47,6 @@ namespace CardManagementApi.Authentication
             string username = parts[0];
             string password = parts[1];
 
-            // TODO: Validate username and password against your authentication mechanism
-
             var claims = new[] { new Claim(ClaimTypes.Name, username) };
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);

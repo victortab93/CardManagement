@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CardManagementApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -19,6 +18,10 @@ namespace CardManagementApi.Persistence
 
         public virtual DbSet<Card> Cards { get; set; } = null!;
         public virtual DbSet<Payment> Payments { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,11 +46,11 @@ namespace CardManagementApi.Persistence
 
                 entity.Property(e => e.PaymentDate).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Card)
-                    .WithMany(p => p.Payments)
-                    .HasForeignKey(d => d.CardId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PaymentCard");
+                //entity.HasOne(d => d.Card)
+                //    .WithMany(p => p.Payments)
+                //    .HasForeignKey(d => d.CardId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_PaymentCard");
             });
 
             OnModelCreatingPartial(modelBuilder);

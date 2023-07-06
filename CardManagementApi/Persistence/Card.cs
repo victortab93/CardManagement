@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CardManagementApi.Models
+namespace CardManagementApi.Persistence
 {
     public partial class Card
     {

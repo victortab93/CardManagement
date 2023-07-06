@@ -1,11 +1,10 @@
 ﻿namespace CardManagementApi
-{    
+{
     public class PaymentFeeService
     {
-        private static readonly Lazy<PaymentFeeService> lazy = new Lazy<PaymentFeeService>(() => new PaymentFeeService(), LazyThreadSafetyMode.ExecutionAndPublication);
         private decimal fee;
 
-        private PaymentFeeService()
+        public PaymentFeeService()
         {
             // Start a new thread to generate random fees every hour
             ThreadPool.QueueUserWorkItem(_ =>
@@ -21,8 +20,6 @@
                 }
             });
         }
-
-        public static PaymentFeeService Instance => lazy.Value;
 
         public decimal GetCurrentFee()
         {

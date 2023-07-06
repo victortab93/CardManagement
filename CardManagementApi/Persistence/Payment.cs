@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CardManagementApi.Models
+namespace CardManagementApi.Persistence
 {
     public partial class Payment
     {
@@ -11,6 +11,6 @@ namespace CardManagementApi.Models
         public DateTime PaymentDate { get; set; }
         public decimal Fee { get; set; }
 
-        public virtual Card Card { get; set; } = null!;
+        //public virtual Card Card { get; set; } = null!;
     }
 }

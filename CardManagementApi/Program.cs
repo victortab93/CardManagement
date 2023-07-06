@@ -1,3 +1,4 @@
+using CardManagementApi;
 using CardManagementApi.Authentication;
 using CardManagementApi.Persistence;
 using Microsoft.AspNetCore.Authentication;
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddSingleton<PaymentFeeService>();
 builder.Services.AddAuthentication("BasicAuthentication")
            .AddScheme<AuthenticationSchemeOptions
            , BasicAuthenticationHandler>("BasicAuthentication", null);
@@ -32,6 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

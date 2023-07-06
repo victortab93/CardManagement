@@ -1,5 +1,4 @@
-﻿using CardManagementApi.Models;
-using CardManagementApi.Persistence;
+﻿using CardManagementApi.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +11,13 @@ namespace CardManagementApi.Controllers
     public class CardController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly PaymentFeeService _payment;
 
-        public CardController(ApplicationDbContext context)
+        public CardController(ApplicationDbContext context
+            , PaymentFeeService payment)
         {
             _context = context;
+            _payment = payment;
         }
 
         [HttpPost]
@@ -48,9 +50,10 @@ namespace CardManagementApi.Controllers
             }
 
             // Calculate the payment fee
-            var fee = PaymentFeeService.Instance.GetCurrentFee();
-            var totalAmount = amount + (amount * fee);
-
+            decimal fee = _payment.GetCurrentFee();
+            fee = decimal.Round(fee, 6, MidpointRounding.AwayFromZero);
+            decimal totalAmount = amount + (amount * fee);
+            totalAmount = decimal.Round(totalAmount, 6, MidpointRounding.AwayFromZero);
             // Check if the card has enough balance
             if (card.Balance < totalAmount)
             {
@@ -67,7 +70,7 @@ namespace CardManagementApi.Controllers
             };
 
             // Update the card balance
-            card.Balance -= totalAmount;
+            card.Balance = decimal.Round((card.Balance - totalAmount), 6, MidpointRounding.AwayFromZero);
 
             _context.Payments.Add(payment);
             _context.SaveChanges();
